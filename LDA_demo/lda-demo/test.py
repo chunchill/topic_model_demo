@@ -9,13 +9,14 @@ from sklearn import feature_extraction
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import HashingVectorizer
+CURRENT_FILE_PATH = os.path.dirname(__file__)
 
 if __name__ == "__main__":
 
 
     #存储读取语料 一行预料为一个文档
     corpus = []
-    for line in open('data.txt', 'r').readlines():
+    for line in open(os.path.join(CURRENT_FILE_PATH,'data.txt'), 'r').readlines():
         #print line
         corpus.append(line.strip())
     #print corpus
