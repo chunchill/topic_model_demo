@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     #存储读取语料 一行预料为一个文档
     corpus = []
-    for line in open(os.path.join(CURRENT_FILE_PATH,'data.txt'), 'r').readlines():
+    for line in open(os.path.join(CURRENT_FILE_PATH ,'data.txt'), 'r').readlines():
         #print line
         corpus.append(line.strip())
     #print corpus
@@ -39,9 +39,20 @@ if __name__ == "__main__":
     import lda
     import lda.datasets
 
-    model = lda.LDA(n_topics=10, n_iter=500, random_state=1)
+    model = lda.LDA(n_topics=20, n_iter=500, random_state=1)
     model.fit(np.asarray(weight))  # model.fit_transform(X) is also available
     topic_word = model.topic_word_  # model.components_ also works
+
+    # 输出主题中的TopN关键词
+    word = vectorizer.get_feature_names()
+    for w in word:
+        print w
+    print topic_word[:, :3]
+    n = 5
+    for i, topic_dist in enumerate(topic_word):
+        topic_words = np.array(word)[np.argsort(topic_dist)][:-(n + 1):-1]
+        # print(u'*Topic {}\n- {}'.format(i, ' '.join(topic_words)))
+        print (' '.join(topic_words))
 
     # 文档-主题（Document-Topic）分布
     doc_topic = model.doc_topic_
@@ -53,16 +64,17 @@ if __name__ == "__main__":
     for n in range(length):
         topic_most_pr = doc_topic[n].argmax()
         label.append(topic_most_pr)
-        print("doc: {} topic: {}".format(n, topic_most_pr))
+        # print("doc: {} topic: {}".format(n, topic_most_pr))
+        print(topic_most_pr)
 
 
-        # # LDA算法
+    #     # LDA算法
     # print 'LDA:'
     # import numpy as np
     # import lda
     # import lda.datasets
     #
-    # model = lda.LDA(n_topics=10, n_iter=500, random_state=1)
+    # model = lda.LDA(n_topics=15, n_iter=500, random_state=1)
     # model.fit(np.asarray(weight))  # model.fit_transform(X) is also available
     # topic_word = model.topic_word_  # model.components_ also works
     #
@@ -74,7 +86,8 @@ if __name__ == "__main__":
     # n = 5
     # for i, topic_dist in enumerate(topic_word):
     #     topic_words = np.array(word)[np.argsort(topic_dist)][:-(n + 1):-1]
-    #     print(u'*Topic {}\n- {}'.format(i, ' '.join(topic_words)))
+    #     # print(u'*Topic {}\n- {}'.format(i, ' '.join(topic_words)))
+    #     print (' '.join(topic_words))
     #
     #
     #     # 文档-主题（Document-Topic）分布
